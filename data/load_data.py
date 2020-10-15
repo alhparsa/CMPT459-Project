@@ -6,6 +6,13 @@ class Data:
     def __init__(self):
         self.location = self.load_location_data()
         self.individual = self.load_individual_data()
+        self.fix_countries()
+    
+    def fix_countries(self):
+        self.individual.loc[self.individual.province == 'Taiwan','country'] = "Taiwan*"
+        self.location.loc[self.location['Country_Region'] == 'Taiwan*', 'Province_State'] = 'Taiwan'
+        self.location.loc[self.location['Country_Region'] == 'Korea, South', 'Province_State'] = 'South Korea'
+
     
     def load_location_data(self, path='./data/processed_location_Sep20th2020.csv',parse_date=True):
         return pd.read_csv(path)
@@ -62,7 +69,7 @@ class Data:
         """
         Removing outliers that are coordinately impossible
         """
-        individual = ind_data.dropna(subset=['country', 'latitude', 'longitude'])
+        individual = ind_data.dropna(subset=['latitude', 'longitude'])
 
         # Remove values with out-of-bounds long/lat ranges
         individual = individual.drop(individual[(individual.latitude < -90) | (individual.latitude > 90) | (individual.longitude < -180) | (individual.longitude > 180)].index)
