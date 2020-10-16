@@ -9,10 +9,12 @@ class Data:
         self.fix_countries()
     
     def fix_countries(self):
-        self.individual.loc[self.individual.province == 'Taiwan','country'] = "Taiwan*"
-        self.location.loc[self.location['Country_Region'] == 'Taiwan*', 'Province_State'] = 'Taiwan'
-        self.location.loc[self.location['Country_Region'] == 'Korea, South', 'Province_State'] = 'South Korea'
-
+        self.individual.loc[self.individual.province == 'Taiwan','country'] = "Taiwan"
+        self.individual.loc[self.individual.country == 'Puerto Rico','province'] = "Puerto Rico"
+        self.individual.loc[self.individual.province == 'Puerto Rico','country'] = "United States"
+        self.location.loc[self.location['Country_Region'] == 'Taiwan*', 'Country_Region'] = 'Taiwan'
+        self.location.loc[self.location['Country_Region'] == 'Korea, South', 'Country_Region'] = 'South Korea'
+        self.location.loc[self.location['Country_Region'] == 'Czechia', 'Country_Region'] = 'Czech Republic'
     
     def load_location_data(self, path='./data/processed_location_Sep20th2020.csv',parse_date=True):
         return pd.read_csv(path)
