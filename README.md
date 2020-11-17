@@ -4,6 +4,8 @@ matplotlib
 jupyter-lab
 pandas
 seaborn
+torch
+sklearn
 
 How to execute:
 Run Milestone_1.pynb in jupyter notebook.

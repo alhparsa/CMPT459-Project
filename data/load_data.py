@@ -5,6 +5,7 @@ from sklearn import preprocessing
 import pandas as pd
 import numpy as np
 import sklearn
+import torch
 
 
 class Data:
@@ -206,8 +207,11 @@ class CleanedData:
                 np.array(data['transformed_sex']).reshape(-1, 1))
 
     def decode_outcome(self, data):
-        data.loc[data.index] = self.encoder.inverse_transform(np.array(data.values, dtype='int8').reshape(-1, 1))
-        return data
+        if isinstance(data, torch.Tensor) or isinstance(data, np.ndarray):
+            return self.encoder.inverse_transform(np.array(data, dtype='int8').reshape(-1, 1)).ravel()
+        data_ = data.copy(deep=True)
+        data_.loc[data.index] = self.encoder.inverse_transform(np.array(data.values, dtype='int8').reshape(-1, 1))
+        return data_
 
     def convert_back(self, data=None):
         self.scale_up_values(data)
