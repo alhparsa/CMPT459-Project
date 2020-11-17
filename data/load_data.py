@@ -185,9 +185,9 @@ class CleanedData:
         imputer = IterativeImputer(
             max_iter=100, random_state=50, missing_values=np.nan)
         data_ = self.data[['age', 'transformed_sex', 'transformed_Combined_Key', 'in_contact', 'confirmed_day', 'Case-Fatality_Ratio',
-                           'Incidence_Rate', 'Active', 'outcome', 'Lat', 'Long_', 'Confirmed', 'Deaths', 'Recovered']].replace('unknown', np.nan)
+                           'Incidence_Rate', 'Active', 'Lat', 'Long_', 'Confirmed', 'Deaths', 'Recovered']].replace('unknown', np.nan)
         self.data[['age', 'transformed_sex', 'transformed_Combined_Key', 'in_contact', 'confirmed_day', 'Case-Fatality_Ratio',
-                   'Incidence_Rate', 'Active', 'outcome', 'Lat', 'Long_', 'Confirmed', 'Deaths', 'Recovered']] = imputer.fit_transform(data_)
+                   'Incidence_Rate', 'Active', 'Lat', 'Long_', 'Confirmed', 'Deaths', 'Recovered']] = imputer.fit_transform(data_)
 
     def convert_data(self):
         self.encode_combined_key()
