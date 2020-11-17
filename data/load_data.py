@@ -99,7 +99,10 @@ class CleanedData:
     """
 
     def __init__(self, loc='./data/joined.csv', test_ratio=0.2, impute_data=True, convert_non_numerical=False, normalize_data=False, **drop_columns):
-        self.data = pd.read_csv(loc, parse_dates=[6, 10],)
+        if 'gz' in loc:
+            self.data = pd.read_csv(loc, compression='gzip', parse_dates=[6, 10],)
+        else:
+            self.data = pd.read_csv(loc, parse_dates=[6, 10],)
         self.data['confirmed_day'] = self.data['date_confirmation'].dt.dayofyear
         self.data.loc[self.data[self.data['additional_information'].str.contains(
             'contact', na=False)].index, 'in_contact'] = 1
