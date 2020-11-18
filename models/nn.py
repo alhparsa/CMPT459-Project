@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 import torch.nn
 import torch
+import tqdm
 
 
 """
@@ -69,3 +70,23 @@ def load_model(model, pth):
 
 def load_data(train_dataset, batch_size=250, num_workers=0):
     return torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, num_workers=num_workers)
+
+def train_model(model, X_train, y_train, epochs=10, lr=0.01, path='model_1.pth'):
+    dataloader = load_data(train_data(X_train, y_train))
+    criterion = torch.nn.CrossEntropyLoss()
+    optimizer = optim.Adam(model.parameters(), lr=lr)
+    epochs = epochs
+    total_loss = []
+    for i in tqdm.tqdm(range(epochs)):
+        ls = 0
+        for i_batch, sample_batched in enumerate(dataloader):
+            X, y = sample_batched
+            y_hat = model(X.float())
+            loss = criterion(y_hat, y.long())
+            loss.backward()
+            optimizer.step()
+            optimizer.zero_grad()
+            ls += loss.cpu().float()
+        total_loss.append(ls/(i_batch+1.))
+        print(f'iter: {i}, loss: {ls/(i_batch+1.)}')
+    torch.save(model.state_dict(), path)
