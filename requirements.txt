@@ -1,6 +1,6 @@
 numpy
 matplotlib
-jupyter-lab
+jupyterlab
 pandas
 seaborn
 torch

@@ -2,11 +2,20 @@ from sklearn.experimental import enable_iterative_imputer
 from sklearn.impute import IterativeImputer
 from sklearn import model_selection
 from sklearn import preprocessing
+import urllib.request
 import pandas as pd
 import numpy as np
 import sklearn
 import torch
+import os
 
+def download_files():
+    if not os.path.exists('./data/joined.csv.gz'):
+        data_url = 'https://github.com/alhparsa/CMPT459-Project/raw/main/data/joined.csv.gz'
+        urllib.request.urlretrieve(data_url, './data/joined.csv.gz')
+    if not os.path.exists('knn_model.pkl'):
+        model_url = 'https://github.com/alhparsa/CMPT459-Project/raw/main/data/knn_model.pkl'
+        urllib.request.urlretrieve(model_url, './data/knn_model.pkl')
 
 class Data:
     def __init__(self):
@@ -98,7 +107,8 @@ class CleanedData:
     Class used for milestone 2
     """
 
-    def __init__(self, loc='./data/joined.csv', test_ratio=0.2, impute_data=True, convert_non_numerical=False, normalize_data=False, **drop_columns):
+    def __init__(self, loc='./data/joined.csv.gz', test_ratio=0.2, impute_data=True, convert_non_numerical=False, normalize_data=False, **drop_columns):
+        download_files()
         if 'gz' in loc:
             self.data = pd.read_csv(loc, compression='gzip', parse_dates=[6, 10],)
         else:
