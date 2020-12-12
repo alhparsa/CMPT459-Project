@@ -24,14 +24,14 @@ model_3 and model_4 were trained for 10 and 15 epochs.
 
 class train_data(Dataset):
     def __init__(self, X_train, y_train):
-        self.data = X_train
-        self.label = y_train
+        self.data = X_train.to_numpy()
+        self.label = y_train.to_numpy()
 
     def __len__(self):
         return self.data.shape[0]
 
     def __getitem__(self, idx):
-        return torch.tensor(np.array(self.data.iloc[idx].values, dtype='float'), requires_grad=True), torch.tensor(self.label.iloc[idx], requires_grad=False).long()
+        return torch.tensor(np.array(self.data[idx], dtype='float'), requires_grad=True), torch.tensor(self.label[idx], requires_grad=False).long()
 
 
 class network_1(torch.nn.Module):
