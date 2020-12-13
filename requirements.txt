@@ -5,3 +5,6 @@ pandas
 seaborn
 torch
 sklearn
+ax-platform
+GPyTorch
+BoTorch
