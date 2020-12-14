@@ -53,16 +53,17 @@ class train_data(Dataset):
 
 
 class network(torch.nn.Module):
-    def __init__(self, first_layer_size=50, second_layer_size=250, activation = 'relu'):
+    def __init__(self, first_layer_size=50, second_layer_size=250, activation_1 = 'relu', activation_2 = 'relu'):
         super(network, self).__init__()
         self.linear1 = torch.nn.Linear(13, first_layer_size)
         self.linear2 = torch.nn.Linear(first_layer_size, second_layer_size)
         self.output = torch.nn.Linear(second_layer_size, 4)
-        self.activation = getattr(torch, activation)
+        self.activation_1 = getattr(torch, activation_1)
+        self.activation_2 = getattr(torch, activation_2)
 
     def forward(self, x):
-        x = self.activation(self.linear1(x))
-        x = self.activation(self.linear2(x))
+        x = self.activation_1(self.linear1(x))
+        x = self.activation_2(self.linear2(x))
         x = self.output(x)
         return x
 
@@ -91,13 +92,13 @@ def load_data(X_t, y_t, batch_size=250, num_workers=0, train=True):
     if train:
         global X_train
         global y_train
-        X_train = X_t.to_numpy()
-        y_train = y_t.to_numpy()
+        X_train = X_t
+        y_train = y_t
     else:
         global X_val
         global y_val
-        X_val = X_t.to_numpy()
-        y_val = y_t.to_numpy()
+        X_val = X_t
+        y_val = y_t
     return torch.utils.data.DataLoader(train_data(train), batch_size=batch_size, num_workers=num_workers)
 
 def train_model(model, X_t, y_t, epochs=10, lr=0.01, path='model_1.pth'):

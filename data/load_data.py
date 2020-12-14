@@ -1,5 +1,6 @@
 from sklearn.experimental import enable_iterative_imputer
 from sklearn.impute import IterativeImputer
+from sklearn.model_selection import KFold, StratifiedKFold
 from sklearn import model_selection
 from sklearn import preprocessing
 import urllib.request
@@ -134,6 +135,7 @@ class CleanedData:
         if normalize_data:
             self.scale_down_values()
         self.split_data(test_ratio)
+        self.kf = StratifiedKFold(4, shuffle=True, random_state=69)
 
 
     def encode_combined_key(self):
@@ -245,3 +247,11 @@ class CleanedData:
     @property
     def test_data(self):
         return self.X_test, self.y_test
+
+    @property
+    def kfold_data(self):
+        X = self.data.drop(
+            columns=['outcome', 'sex', 'date_confirmation', 'Combined_Key']).to_numpy()
+        y = self.data['outcome'].to_numpy()
+        for train, val in self.kf.split(X, y):
+            yield [X[train], y[train], X[val], y[train]]
