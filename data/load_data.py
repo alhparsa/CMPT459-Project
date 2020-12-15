@@ -254,4 +254,4 @@ class CleanedData:
             columns=['outcome', 'sex', 'date_confirmation', 'Combined_Key']).to_numpy()
         y = self.data['outcome'].to_numpy()
         for train, val in self.kf.split(X, y):
-            yield [X[train], y[train], X[val], y[train]]
+            yield [X[train], y[train], X[val], y[val]]
