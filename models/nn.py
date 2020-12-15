@@ -53,7 +53,7 @@ class train_data(Dataset):
 
 
 class network(torch.nn.Module):
-    def __init__(self, first_layer_size=50, second_layer_size=250, activation_1 = 'relu', activation_2 = 'relu'):
+    def __init__(self, first_layer_size=50, second_layer_size=250, activation_1 = 'relu', activation_2 = 'sigmoid'):
         super(network, self).__init__()
         self.linear1 = torch.nn.Linear(13, first_layer_size)
         self.linear2 = torch.nn.Linear(first_layer_size, second_layer_size)
