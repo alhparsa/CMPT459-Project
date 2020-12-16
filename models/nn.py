@@ -51,7 +51,20 @@ class train_data(Dataset):
         
         #         return torch.tensor(np.array(self.data[idx], dtype='float'), requires_grad=True), torch.tensor(self.label[idx], requires_grad=False).long()
 
+class network_1(torch.nn.Module):
+    def __init__(self):
+        super(network_1, self).__init__()
+        self.linear1 = torch.nn.Linear(13, 50)
+        self.linear2 = torch.nn.Linear(50, 250)
+        self.output = torch.nn.Linear(250, 4)
 
+    def forward(self, x):
+        x = torch.relu(self.linear1(x))
+        x = torch.sigmoid(self.linear2(x))
+        x = self.output(x)
+        return x
+        
+        
 class network(torch.nn.Module):
     def __init__(self, first_layer_size=50, second_layer_size=250, activation_1 = 'relu', activation_2 = 'sigmoid'):
         super(network, self).__init__()
